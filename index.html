@@ -63,6 +63,25 @@
                 margin: 0;
                 padding: 0;
             }
+            html {
+                scroll-behavior: smooth;
+            }
+            /* The sticky nav is ~58px tall — if we don't tell the
+               browser, in-page anchors scroll the target right under
+               the nav. scroll-margin-top fixes that for every
+               anchorable section without per-element overrides. */
+            section[id],
+            #top {
+                scroll-margin-top: 72px;
+            }
+            /* Keyboard-accessible focus ring. Visible only when the
+               user is actually tabbing — :focus-visible suppresses it
+               for mouse clicks so the page doesn't get noisy. */
+            :focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: 3px;
+                border-radius: 4px;
+            }
             body {
                 background: var(--bg);
                 color: var(--ink);
@@ -100,6 +119,9 @@
                 gap: 10px;
                 font-weight: 600;
                 font-size: 17px;
+                color: inherit;
+                text-decoration: none;
+                cursor: pointer;
             }
             .brand-mark {
                 width: 28px;
@@ -111,6 +133,10 @@
                 justify-content: center;
                 padding: 0 5px;
                 gap: 2px;
+                transition: transform 0.25s ease;
+            }
+            .brand:hover .brand-mark {
+                transform: rotate(-4deg);
             }
             .brand-mark span {
                 display: block;
@@ -135,9 +161,31 @@
                 color: var(--ink-2);
                 text-decoration: none;
                 font-size: 14px;
+                position: relative;
+                padding: 4px 0;
+                transition: color 0.2s ease;
+            }
+            /* Animated underline on the secondary nav links — purely
+               aesthetic, but it's the difference between "it's a link"
+               and "this site has been polished." Excluded for the CTA
+               below, which has its own button styling. */
+            .nav-links a:not(.nav-cta)::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 1.5px;
+                background: var(--accent);
+                transform: scaleX(0);
+                transform-origin: left center;
+                transition: transform 0.22s ease;
             }
             .nav-links a:hover {
                 color: var(--accent);
+            }
+            .nav-links a:not(.nav-cta):hover::after {
+                transform: scaleX(1);
             }
             /* Higher specificity than `.nav-links a` so the CTA actually
      gets its solid-on-dark color back. Without this the secondary
@@ -199,6 +247,13 @@
                 gap: 12px;
                 flex-wrap: wrap;
             }
+            .btn-primary,
+            .btn-secondary {
+                transition:
+                    transform 0.2s ease,
+                    box-shadow 0.2s ease,
+                    border-color 0.2s ease;
+            }
             .btn-primary {
                 background: var(--ink);
                 color: var(--bg);
@@ -210,6 +265,10 @@
                 align-items: center;
                 gap: 8px;
             }
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.3);
+            }
             .btn-secondary {
                 color: var(--ink);
                 padding: 14px 24px;
@@ -217,6 +276,10 @@
                 text-decoration: none;
                 font-weight: 500;
                 border: 1px solid var(--hair);
+            }
+            .btn-secondary:hover {
+                transform: translateY(-2px);
+                border-color: var(--accent);
             }
             .hero-meta {
                 margin-top: 28px;
@@ -259,6 +322,16 @@
                     0 60px 100px -40px rgba(0, 0, 0, 0.35),
                     0 24px 40px -12px rgba(0, 0, 0, 0.12);
                 line-height: 0;
+                transition:
+                    transform 0.35s ease,
+                    box-shadow 0.35s ease;
+            }
+            .device:hover {
+                transform: translateY(-3px);
+                box-shadow:
+                    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+                    0 80px 120px -40px rgba(0, 0, 0, 0.38),
+                    0 30px 50px -12px rgba(0, 0, 0, 0.15);
             }
             .device picture,
             .device-screenshot {
@@ -581,19 +654,25 @@
             footer.foot a:hover {
                 color: var(--accent);
             }
+            .foot-fine {
+                margin-top: 16px;
+                font-size: 12px;
+                color: var(--ink-3);
+                opacity: 0.8;
+            }
             ::selection {
                 background: var(--accent);
                 color: white;
             }
         </style>
     </head>
-    <body>
+    <body id="top">
         <nav class="top">
             <div class="container">
-                <div class="brand">
+                <a class="brand" href="#top" aria-label="Spool — back to top">
                     <div class="brand-mark"><span></span><span></span><span></span></div>
                     Spool
-                </div>
+                </a>
                 <div class="nav-links">
                     <a href="#features">Features</a>
                     <a href="#listen">Listen</a>
@@ -1041,6 +1120,10 @@
                     &nbsp;·&nbsp;
                     <a href="/privacy/">Privacy</a>
                 </span>
+            </div>
+            <div class="container foot-fine">
+                Spool is an independent project. Not affiliated with Y Combinator or
+                Hacker News.
             </div>
         </footer>
     </body>
