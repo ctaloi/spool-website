@@ -786,6 +786,43 @@
             </div>
         </section>
 
+        <!-- DEEP DIVE: AI SUMMARY -->
+        <section class="deep" id="summary">
+            <div class="container deep-grid reverse">
+                <div>
+                    <span class="pill">Summary</span>
+                    <h2>The 30-second take, on tap.</h2>
+                    <p>
+                        Apple's on-device language model runs against the article right on your
+                        phone — no API keys, no network round-trip, nothing leaving the device. You
+                        get a structured take: what the piece is actually saying, why HN cares, and
+                        where it overreaches.
+                    </p>
+                    <p>
+                        Tap once for the summary card. Tap again for a sentiment-aware digest of
+                        the discussion. The original article is still right there when you want to
+                        go deeper.
+                    </p>
+                </div>
+                <div class="device device-medium">
+                    <picture>
+                        <source
+                            srcset="screenshots/_web/summary-dark.png"
+                            media="(prefers-color-scheme: dark)"
+                        />
+                        <img
+                            class="device-screenshot"
+                            src="screenshots/_web/summary-light.png"
+                            alt="Story summary card — AI-generated structured take on a Hacker News article with Why HN cares and key claims"
+                            loading="lazy"
+                            width="560"
+                            height="1158"
+                        />
+                    </picture>
+                </div>
+            </div>
+        </section>
+
         <!-- DEEP DIVE: LISTEN -->
         <section class="deep" id="listen">
             <div class="container deep-grid">
@@ -823,7 +860,7 @@
         </section>
 
         <!-- DEEP DIVE: EDITABLE PROMPTS -->
-        <section class="deep" id="summary" style="background: var(--bg-alt)">
+        <section class="deep" id="prompts" style="background: var(--bg-alt)">
             <div class="container deep-grid reverse">
                 <div>
                     <span class="pill">Summarize, your way</span>

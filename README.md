@@ -29,19 +29,31 @@ Pure HTML + CSS + light SVG. No JS. No analytics. No third-party scripts.
 ## Refreshing screenshots
 
 The app repo (`ctaloi/spool`) generates the web-sized PNGs via
-`tools/make_web_screenshots.swift`. After updating the source
-captures there, copy the regenerated `_web/` directory into this repo:
+`tools/make_web_screenshots.swift`. The tool writes directly across
+the worktree boundary into `../spool-website/screenshots/_web/`, so a
+single run regenerates both light and dark variants in place — no
+copy step needed.
 
 ```sh
-cd ../spool
+cd ../hacker-news    # the spool app repo, sibling to this one
 swift tools/make_web_screenshots.swift
-cp -R landing/screenshots/_web/. ../spool-website/screenshots/_web/
 cd ../spool-website
 git diff screenshots/_web/   # sanity check
 git add screenshots/_web/
 git commit -m "Refresh web screenshots"
 git push
 ```
+
+Each screenshot section in `index.html` uses a `<picture>` element
+with a `prefers-color-scheme: dark` source so the dark capture is
+served automatically when the visitor's OS is in dark mode. Adding a
+new screenshot is a two-step change:
+
+1. Add a `WebSlot` entry in the app repo's
+   `tools/make_web_screenshots.swift` (the stem becomes
+   `<stem>-light.png` + `<stem>-dark.png` in `_web/`).
+2. Drop a new `<section class="deep">` into `index.html` with a
+   `<picture>` block referencing both variants.
 
 ## Deploy
 
