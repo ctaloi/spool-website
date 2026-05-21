@@ -41,7 +41,10 @@ cd ../spool-website
 git diff screenshots/_web/   # sanity check
 git add screenshots/_web/
 git commit -m "Refresh web screenshots"
-git push
+git push                                      # GitHub only — does NOT deploy
+npx wrangler@latest pages deploy . \
+    --project-name=spool --branch=main \
+    --commit-dirty=false                      # actually publishes to getspool.news
 ```
 
 Each screenshot section in `index.html` uses a `<picture>` element
@@ -57,8 +60,22 @@ new screenshot is a two-step change:
 
 ## Deploy
 
-Cloudflare Pages watches `main`. Every push redeploys to
-[getspool.news](https://getspool.news).
+The Cloudflare Pages project (`spool` in the Vaspian Engineering
+account) is **direct-upload**, not git-bound — `git push` only updates
+GitHub; it does not redeploy the site. To publish a change to
+[getspool.news](https://getspool.news), run wrangler from this repo
+root:
+
+```sh
+npx wrangler@latest pages deploy . \
+    --project-name=spool --branch=main \
+    --commit-dirty=false
+```
+
+`--branch=main` aliases the upload to the production custom domains
+(`getspool.news` + `www.getspool.news`). The first run installs
+wrangler on the fly via npx and uses cached Cloudflare credentials
+in `~/.config/.wrangler/`.
 
 ## License
 
